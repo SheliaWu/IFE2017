@@ -11,3 +11,4 @@ var testLetters=['foo foo bar','foo bar foo', 'foo barbar bar'];
 for(let i=0;i<testLetters.length;i++){
     console.log(testLetters[i].match(noRepeat));
 }
+/*笔记：匹配单词\b\w+\b，但是\b只是匹配位置并不匹配任何字符，因此还需要匹配空白字符\s+*/
