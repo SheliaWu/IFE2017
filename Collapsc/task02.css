@@ -1,0 +1,55 @@
+/*使用CSS实现折叠面板*/
+body,div,ul,ol,li,input,a{
+	padding:0;
+	margin:0;
+}
+body{
+	font-family: Arial, "Microsoft YaHei", sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color:#333;
+}
+div{
+	display: block;
+}
+.panel-group{
+	width: 60%;
+	margin:20px auto;
+	padding:10px 10px;
+
+}
+.panel{
+	background-color: #f5f5f5;
+	margin:0 auto 10px auto;
+	border:1px solid #ddd;
+	border-radius:5px;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	-webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);
+}
+label{
+	display: inline-block;	
+	padding:10px 15px;
+}
+.panel-body{
+
+	background-color: #fff;
+	height: 0px;
+	overflow: hidden;
+
+}
+@keyframes display
+{
+	from{height: 0;}
+	to{height: 117px;}
+}
+input[type="radio"]:checked+div{
+	padding:15px 10px;
+	animation: display 3s;
+	-moz-animation:display 3s;
+	-webkit-animation:display 3s;
+	-o-animation:display 3s;
+	animation-fill-mode: forwards;
+
+}
