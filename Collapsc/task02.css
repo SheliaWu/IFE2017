@@ -42,7 +42,7 @@ label{
 @keyframes display
 {
 	from{height: 0;}
-	to{height: 117px;}
+	to{height: 100px;}
 }
 input[type="radio"]:checked+div{
 	padding:15px 10px;
