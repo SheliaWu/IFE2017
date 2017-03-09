@@ -50,7 +50,7 @@ let app=new Observer(data);
 app.data.address;
 //app.data.user.name;
 app.data.address.city;//依次输出address,city
-app.data.address={province:'Hainan'}
+app.data.address={province:'Hainan',city:'haikou'}
 app.data.address.province;//没有显示province
 
 let app1 = new Observer({
