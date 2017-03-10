@@ -1,3 +1,5 @@
+console.log('==========task1===========');
+
 function Observer(data){
 	this.data=data;
 	this.walk(data);
