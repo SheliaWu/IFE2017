@@ -3,6 +3,7 @@ console.log('============task5=========')
  * 使用的方法太简单粗暴了，如果nodeValue的文本中有何旧值相同的也会被改变
  * 优化的方法：我在想应该在findAllNode的时候为每个有表达式的值新建一个DOM节点并存储起来
  * 修改值时，首先看存储的DOM节点中是否有这个key(绝对路径)，有则取出相应的DOM修改nodeValue
+ * 不懂做了233
  */
 function Vue(options){
 	this.data=options.data;
@@ -68,7 +69,7 @@ Vue.prototype={
 	},
 
 	findAllNode:function(node){
-		console.time('nodeRender');
+
 		for(let i=0;i<node.childNodes.length;i++){
 			let item=node.childNodes[i];
 			if(item.childNodes.length){
@@ -81,7 +82,7 @@ Vue.prototype={
 	},
 
 	compile:function(node){
-		let reg=/{{(.*?)}}/g;
+		let reg=/{{(\w+)}}/g;
 		if(reg.test(node.nodeValue)){
 			let arr=node.nodeValue.match(reg);
 			arr.forEach((item,index) => {
