@@ -57,7 +57,8 @@ p.walk=function(obj){
 			val=obj[key];
 			//如果还是一个对象，那么可以调用
 			if(typeof val === 'object'){
-				new ReObserver(val)
+				new ReObserver(val);
+				
 			}
 			this.convert(key,val);
 		}

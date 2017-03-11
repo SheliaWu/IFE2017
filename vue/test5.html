@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>just for javascript test</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<div id="app">
+	<p>姓名：{{user.name}} {{user.age}}</p>
+	<p>年龄：{{user}} {{user.age}}</p>
+</div>
+<script type="text/javascript" src="task5.js"></script>
+<script type="text/javascript">
+let app = new Vue({
+  el:'#app',
+  data: {
+    user: {
+      name: 'youngwind',
+      age: 25
+    }
+  }
+});
+app.$watch('name',function(){
+	console.log('我的名字被改变了');
+})
+app.data.user.name="offer";
+</script>
+</body>
+</html>
