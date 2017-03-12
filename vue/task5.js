@@ -69,7 +69,6 @@ Vue.prototype={
 	},
 
 	findAllNode:function(node){
-
 		for(let i=0;i<node.childNodes.length;i++){
 			let item=node.childNodes[i];
 			if(item.childNodes.length){
