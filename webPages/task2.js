@@ -1,11 +1,7 @@
 //bug:evaluate只能选择标签不能选择选择器,why!!
 var page = require('webpage').create(),
-  system = require('system');
-var devices = [
-{device:'iPhone5',width:320,height:568,ua:"Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"},
-{device:'iPhone6',width:375,height:667,ua:"Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"},
-{device:'iPad',width:768,height:1024,ua:"Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"}
-]
+  system = require('system'),
+  devices = require("./configure.json");
 var output = {
     device:'',
     code: 0, //返回状态码，1为成功，0为失败
@@ -30,20 +26,17 @@ if(system.args.length<3){
 	console.log('请依次输入查询关键词，设备参数！');
 	phantom.exit();
 }else{
+
 	output.word=system.args[1];
   var device=system.args[2],userAgent,width,height;
   output.device=device;
-  for(i=0;i<devices.length;i++){
-    if(devices[i].device===device){
-      userAgent=devices[i].ua;
-      width=devices[i].width;
-      height=devices[i].height;
-      break;
-    }
-  }
+  userAgent=devices[device].ua;
+  width=devices[device].width;
+  height=devices[device].height;
+
   page.viewportSize = {width: width,height: height};
-  page.clipRect={top:0,left:0,width:width,height:height};
-  page.settings={javascriptEnabled:true,loadImages: true,userAgent:userAgent};
+  page.settings.userAgent=userAgent;
+
 	page.open('https://www.baidu.com/s?wd=' + encodeURIComponent(system.args[1]), function (status) {
     output.msg = status;
     if (status !== 'success') {
@@ -62,9 +55,13 @@ if(system.args.length<3){
               pic: $this.find('.c-row .c-img').attr('src') || ''
             });
           });
-          return dataList;
+          return lists;
+          //return $('body').text();
+          //return document.querySelector('#content_left').innerText;
+          //return document.querySelector('body').innerText
         });
         output.time = Date.now() - t;
+        page.render("task2.jpeg", {format: 'jpeg', quality: '100'})
         console.log(JSON.stringify(output));
         phantom.exit();
       });

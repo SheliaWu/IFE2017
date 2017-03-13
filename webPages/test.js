@@ -8,7 +8,7 @@ page.open('http://m.bing.com', function(status){
 }
    phantom.exit();
  });*/
- var page = require('webpage').create(),
+/* var page = require('webpage').create(),
   system = require('system'),
   fs=require('fs');
 
@@ -20,4 +20,4 @@ if(fs.exists(filePath)&&fs.isFile(filePath)){
 	}
 }
 console.log(arr[0].device);
-phantom.exit();
+phantom.exit();*/
