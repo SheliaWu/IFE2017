@@ -1,56 +1,57 @@
+//phantom.outputEncoding='gb2312';
+//bug:韩国变成了??解决办法：encodeURI() 函数可把字符串作为 URI 进行编码
+var page = require('webpage').create(),
+  system = require('system');
 
-//bug:韩国变成了??,貌似返回不了数据，以后再修改吧
-var page=require('webpage').create();
-var system=require('system')
-var keyword=system.args[1];
-console.log('keyword:'+keyword);
-var states={
-	success:{
-		code:1,
-		msg:'抓取成功'
-	},
-	fail:{
-		code:0,
-		msg:'抓取失败'
-	}
-}
-var output={},t,data;
-t=Date.now();
-page.open('https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&tn=baidu&wd='+keyword,function(status){
-	if(status!=='success'){
-		output['code']=states.fail.code;
-		output['msg']=states.fail.msg;
-		data=[];
-		console.log('error');
-	}else{
-		output['code']=states.success.code;
-		output['msg']=states.success.msg;
-		//不知道为什么总是运行不了,已经放弃治疗了
-		//page.includeJs('http://code.jquery.com/jquery-latest.js',function(){
-		if(page.injectJs('jquery.min.js')){
-			data=page.evaluate(function(){
-			var contentBox=$('#content_left').find('.c-container');
-			var datas=[],obj;
-				for(var i=0;i<contentBox.length;i++){
-					obj={};
-					obj['title']=contentBox.eq(i)find('.t').find('a').text(); 
-					obj['info']=contentBox.eq(i).text()；
-					obj['link']=contentBoxe.eq(i).find('.t').find('a').attr('href');
-					obj['pic']=contentBox.eq(i).find('img').eq(0).attr('src');
-					datas.push(obj);
-				}
-				return datas;
-			});
-		//});
-			console.log(data);
-		}
-	}
-
-	output['word']=keyword;
-	t=Date.now()-t;
-	output['time']=t;
-	output['dataList']=data;
-	
+var output = {
+    code: 0, //返回状态码，1为成功，0为失败
+    msg: '', //返回的信息
+    word: '', //抓取的关键字
+    time: 0, //任务的时间
+    dataList:[   //抓取结果列表
+      {
+        title: 'xx',  //结果条目的标题
+        info: '', //摘要
+        link: '', //链接            
+        pic: ''
+      }
+    ]
+  },
+  t = Date.now();
+// 控制台
+page.onConsoleMessage = function (msg) {
+  console.log(msg);
+};
+if(system.args.length===1){
+	console.log('请输入查询关键字！');
 	phantom.exit();
-	
-});
+}else{
+	output.word=system.args[1];
+	page.open('https://www.baidu.com/s?wd=' + encodeURIComponent(system.args[1]), function (status) {
+    output.msg = status;
+    if (status !== 'success') {
+      output.code = 0;
+    } else {
+      page.includeJs("http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js", function () {
+        output.dataList = page.evaluate(function (index) {
+          var lists = [];
+          $('#content_left .c-container').each(function () {
+            var $this = $(this);
+            lists.push({
+              title: $this.find('h3 a').text(),
+              //规范文本
+              info: $this.find('div').eq(0).text().replace(/[\r\n\t\s]/g,'')|| '',
+              link: $this.find('h3 a').attr('href'),
+              pic: $this.find('.c-row .c-img').attr('src') || ''
+            });
+          });
+          return lists;
+        });
+        output.time = Date.now() - t;
+        console.log(JSON.stringify(output));
+        phantom.exit();
+      });
+    }
+  });	
+}
+
